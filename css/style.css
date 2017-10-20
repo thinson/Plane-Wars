@@ -1,0 +1,73 @@
+html, body {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	background-image: url('../img/bg_1.jpg');
+	color: #fff;
+	background-size: cover;
+}
+
+.ui-index {
+	display: none;
+	position: absolute;
+	width: 100%;
+	top:50%;
+	margin-top: -142px;
+
+}
+
+.ui-index h1 {
+	font-size: 50px;
+	text-align: center;
+
+}
+
+.ui-index .btn {
+	display: block;
+	color: #fff;
+	font-size: 20px;
+	background: none;
+	border: 1px solid #999;
+	border-radius: 6px;
+	width:140px;
+	margin: 0 auto;
+	margin-top: 14px;
+}
+
+.ui-rule {
+	display: none;
+	
+}
+
+.ui-panel {
+	width: 80%;
+    background-color: #070808;
+    padding: 14px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    text-align: center;
+    top: 50%;
+    position: absolute;
+    margin-top: -73px;
+    left: 10%;
+    box-sizing: border-box;
+}
+
+.ui-panel .btn {
+	color: #fff;
+	background: :#000;
+	border: 1px solid #fff;
+	font-size: 18px;
+	background: none;
+
+}
+.ui-setting .setting-group {
+	list-style: none;
+	padding: 0;
+}
+.ui-setting select {
+	border-radius: 8px;
+	width: 100px;
+}
