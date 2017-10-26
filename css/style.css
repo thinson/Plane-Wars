@@ -10,7 +10,7 @@ body {
 }
 
 .ui-index {
-	display: none;
+
 	position: absolute;
 	width: 100%;
 	top:50%;
@@ -70,4 +70,8 @@ body {
 .ui-setting select {
 	border-radius: 8px;
 	width: 100px;
+}
+
+.ui-setting {
+	display: none;
 }
