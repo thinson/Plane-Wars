@@ -1,24 +1,55 @@
 var $body = $(document.body);
 
-var $cavas = $('#game');
-var cavas = $cavas.get(0);
-var context = cavas.getContext('2d');
+var $canvas = $('#game');
+var canvas = $canvas.get(0);
+var context = canvas.getContext('2d');
 
-cavas.width = window.innerWidth;
-cavas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-var cavasWidth = cavas.clientWidth;
-var cavasHeught = cavas.clientHeight;
+var canvasWidth = canvas.clientWidth;
+var canvasHeight = canvas.clientHeight;
 
 // 创建游戏对象
 var GAME = {
     init: function(opts) {
+        var opts = Object.assign({}, opts, CONFIG); 
+        //把CONFIG的属性传入opts
+        this.opts = opts; 
+        //弄懂一下this，此处可能是将opts这个位置属性付给game这个大框架,作为GAME的一个属性
 
+        this.planePosX = canvasWidth / 2 -opts.planeSize.width / 2;
+        this.planePosY = canvasHeight - opts.planeSize.height - 50;
+
+       // console.log(this.opts)
     },
     start: function(){
+        var self = this;
+        var opts = this.opts;
+        var iamges = this.images;
+
+        this.enemies = [];
+        this.score = 0;
+
+        this.createSmallEnemyInterval = setInterval(function(){
+            self.createEnemy('normal');
+        },500);
+        this.createBigEnemyInterval = setInterval(function(){
+            self.createEnemy('big');
+        },500);
+
 
     },
     update: function(){
+        var self = this;
+        var opts = this.opts;
+        this.updateElement();
+        context.clearRect(0,0,canvasWidth,canvasHeight);
+        this.draw();
+
+        requestAnimationFrame(function(){
+            self.update()
+        });
 
     },
     end: function(){
