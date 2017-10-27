@@ -10,6 +10,26 @@ cavas.height = window.innerHeight;
 var cavasWidth = cavas.clientWidth;
 var cavasHeught = cavas.clientHeight;
 
+// 创建游戏对象
+var GAME = {
+    init: function(opts) {
+
+    },
+    start: function(){
+
+    },
+    update: function(){
+
+    },
+    end: function(){
+
+    },
+    draw: function(){
+
+    },
+
+}
+
 function blindEvent() {
     var self = this;
     $('.js-start').on('click',function(){
@@ -37,6 +57,7 @@ function(callback) {
 };
 
 function init() {
+    GAME.init();
     blindEvent();
 
 }
