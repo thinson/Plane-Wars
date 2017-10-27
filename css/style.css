@@ -10,7 +10,7 @@ body {
 }
 
 .ui-index {
-
+    display: none;
 	position: absolute;
 	width: 100%;
 	top:50%;
@@ -36,10 +36,10 @@ body {
 	margin-top: 14px;
 }
 
-.ui-rule {
-	display: none;
+/* .ui-rule { */
+	 /*display: none; */
 	
-}
+/* } */
 
 .ui-panel {
 	width: 80%;
@@ -71,7 +71,24 @@ body {
 	border-radius: 8px;
 	width: 100px;
 }
-
+/* 
 .ui-setting {
 	display: none;
+} */
+
+.ui-index,
+.ui-rule,
+.ui-setting {
+  display: none;
 }
+
+/*游戏状态切换场景*/
+[data-status="index"] .ui-index {
+  display: block;
+} 
+[data-status="setting"] .ui-setting {
+  display: block;
+} 
+[data-status="rule"] .ui-rule {
+  display: block;
+} 

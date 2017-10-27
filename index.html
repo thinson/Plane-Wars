@@ -6,19 +6,20 @@
 	<link rel="stylesheet"  href="css/style.css">
 	<title>飞机大战</title>
 </head>
-<body>
+<body data-status = 'index'>
+	<canvas id="game"></canvas>
 	<div class="ui-index">
 		<h1>飞机大战</h1>
 	    <div class="btn-group">
-	    	<button class="btn">开始游戏</button>
-	    	<button class="btn">游戏设置</button>
-	    	<button class="btn">游戏说明</button>
+	    	<button class="js-start btn">开始游戏</button>
+	    	<button class="js-setting btn">游戏设置</button>
+	    	<button class="js-rule btn">游戏说明</button>
 	    </div>
 	</div>
 	<div class="ui-rule ui-panel">
 		<h1>游戏说明</h1>
 		<p>balabala</p>
-		<button class="btn">OK</button>
+		<button class="js-confirm btn">OK</button>
 	</div>
 	<div class="ui-setting ui-panel">
 		<h1>游戏设置</h1>
@@ -45,7 +46,9 @@
 				</select>
 			</li>
 		</ul>
-		<button class="btn">确认设置</button>
+		<button class="js-confirm btn">确认设置</button>
 	</div>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+	<script src="js/app.js"></script>
 </body>
 </html>
