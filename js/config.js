@@ -13,7 +13,7 @@ var CONFIG = {
     enemyMaxNum: 5,
     enemySmallSize: {
         width:54,
-        heught:40
+        height:40
     },
     enemyBigSize: {
         width: 130,

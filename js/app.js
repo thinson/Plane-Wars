@@ -10,6 +10,16 @@ canvas.height = window.innerHeight;
 var canvasWidth = canvas.clientWidth;
 var canvasHeight = canvas.clientHeight;
 
+window.requestAnimFrame =
+window.requestAnimationFrame ||
+window.webkitRequestAnimationFrame ||
+window.mozRequestAnimationFrame ||
+window.oRequestAnimationFrame ||
+window.msRequestAnimationFrame ||
+function(callback) {
+    window.setTimeout(callback, 1000 / 30);
+};
+
 // 创建游戏对象
 var GAME = {
     init: function(opts) {
@@ -26,7 +36,7 @@ var GAME = {
     start: function(){
         var self = this;
         var opts = this.opts;
-        var iamges = this.images;
+        //var iamges = this.images;
 
         this.enemies = [];
         this.score = 0;
@@ -36,7 +46,9 @@ var GAME = {
         },500);
         this.createBigEnemyInterval = setInterval(function(){
             self.createEnemy('big');
-        },500);
+        },1500);
+
+        this.update();
 
 
     },
@@ -52,11 +64,66 @@ var GAME = {
         });
 
     },
+
+    updateElement: function(){
+        var opts = this.opts;
+        var enemySize = opts.enemySize;
+        var enemies = this.enemies;
+        var i = enemies.length;
+
+        while(i--) {
+            var enemy = enemies[i];
+            enemy.down();
+            if (enemy.y >= canvasHeight) {
+                this.enemies.splice(i,1);
+            }
+            else {
+
+            }
+        }
+
+
+    },
+
+    createEnemy: function(enemyType) {
+        var enemies = this.enemies;
+        var opts = this.opts;
+        //var images = this.images || {};
+        var enemySize = opts.enemySmallSize;
+        var enemySpeed = opts.enemySpeed;
+        
+        var enemyLive = 1;
+
+        if (enemyType ==='big') {
+            enemySize  = opts.enemyBigSize;
+            enemySpeed = opts.enemySpeed * 0.6;
+            enemyLive = 10;
+        }
+
+        var initOpts = {
+            x: Math.floor(Math.random() * (canvasWidth - enemySize.width)),
+            y: -enemySize.height,
+            enemyType: enemyType,
+            live: enemyLive,
+            width: enemySize.width,
+            height: enemySize.height,
+            speed: enemySpeed,
+            //美工待添加
+
+        }
+        if(enemies.length < opts.enemyMaxNum) {
+            enemies.push(new Enemy(initOpts));
+        }
+        console.log(enemies);
+
+    },
     end: function(){
 
     },
     draw: function(){
-
+        this.enemies.forEach(function(enemy) {
+            enemy.draw();
+        })
     },
 
 }
@@ -64,7 +131,8 @@ var GAME = {
 function blindEvent() {
     var self = this;
     $('.js-start').on('click',function(){
-        $body.attr('data-status','start')
+        $body.attr('data-status','start');
+        GAME.start();
     })
     $('.js-setting').on('click',function(){
         $body.attr('data-status','setting')
@@ -77,15 +145,7 @@ function blindEvent() {
     })
 }
 
-window.requestAnimFrame =
-window.requestAnimationFrame ||
-window.webkitRequestAnimationFrame ||
-window.mozRequestAnimationFrame ||
-window.oRequestAnimationFrame ||
-window.msRequestAnimationFrame ||
-function(callback) {
-    window.setTimeout(callback, 1000 / 30);
-};
+
 
 function init() {
     GAME.init();
