@@ -36,7 +36,7 @@ var GAME = {
     start: function(){
         var self = this;
         var opts = this.opts;
-        //var iamges = this.images;
+        var iamges = this.images;
 
         this.enemies = [];
         this.score = 0;
@@ -88,15 +88,19 @@ var GAME = {
     createEnemy: function(enemyType) {
         var enemies = this.enemies;
         var opts = this.opts;
-        //var images = this.images || {};
+        var images = this.images || {};
         var enemySize = opts.enemySmallSize;
         var enemySpeed = opts.enemySpeed;
+        var enemyIcon = resourceHelper.getImage('enemySmallIcon');
+        var enemyBoomIcon = resourceHelper.getImage('enemySmallBoomIcon');
         
         var enemyLive = 1;
 
         if (enemyType ==='big') {
             enemySize  = opts.enemyBigSize;
             enemySpeed = opts.enemySpeed * 0.6;
+            enemyIcon = resourceHelper.getImage('enemyBigIcon');
+            enemyBoomIcon = resourceHelper.getImage('enemyBigBoomIcon');
             enemyLive = 10;
         }
 
@@ -108,6 +112,8 @@ var GAME = {
             width: enemySize.width,
             height: enemySize.height,
             speed: enemySpeed,
+            icon: enemyIcon,
+            boomIcon: enemyBoomIcon,
             //美工待添加
 
         }
@@ -148,8 +154,10 @@ function blindEvent() {
 
 
 function init() {
+    resourceHelper.load(CONFIG.resources, function(resources){
     GAME.init();
     blindEvent();
+    })
 
 }
 

@@ -21,8 +21,8 @@ var CONFIG = {
     },
     bulletSpeed: 10,
     // 图片资源配置
-    resource: {
-        image:[
+    resources: {
+         images:[
             {
                 src: './img/plane_1.png',
                 name: 'bluePlaneIcon'

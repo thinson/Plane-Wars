@@ -15,5 +15,6 @@ Enemy.prototype.down = function() {
 };
 
 Enemy.prototype.draw = function(){
-    context.fillRect(this.x, this.y, this.width, this.height);
+    // context.fillRect(this.x, this.y, this.width, this.height);
+    context.drawImage(this.icon,this.x,this.y,this.width,this.height);
 }
