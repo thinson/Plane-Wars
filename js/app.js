@@ -36,7 +36,7 @@ var GAME = {
     start: function(){
         var self = this;
         var opts = this.opts;
-        var iamges = this.images;
+        var images = this.images;
 
         this.enemies = [];
         this.score = 0;
@@ -47,6 +47,20 @@ var GAME = {
         this.createBigEnemyInterval = setInterval(function(){
             self.createEnemy('big');
         },1500);
+        this.plane = new Plane({
+            x: this.planePosX,
+            y: this.planePosY,
+            width: opts.planeSize.width,
+            height: opts.planeSize.height,
+            //子弹相关
+            bulletSize: opts.bulletSize,
+            bulletSpeed: opts.bulletSpeed,
+            //图片资源
+            icon: resourceHelper.getImage('bluePlaneIcon'),
+            bulletIcon: resourceHelper.getImage('fireIcon'),
+            boomIcon: resourceHelper.getImage('enemyBigBoomIcon')
+        });
+        this.plane.startShoot();
 
         this.update();
 
@@ -130,6 +144,7 @@ var GAME = {
         this.enemies.forEach(function(enemy) {
             enemy.draw();
         })
+        this.plane.draw();
     },
 
 }

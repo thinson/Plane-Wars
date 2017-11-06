@@ -10,7 +10,7 @@ var CONFIG = {
         height: 20
     },
     enemySpeed: 4,
-    enemyMaxNum: 5,
+    enemyMaxNum: 50,
     enemySmallSize: {
         width:54,
         height:40
