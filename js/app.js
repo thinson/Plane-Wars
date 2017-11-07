@@ -133,7 +133,7 @@ var GAME = {
         //飞机初始位置定义
         var startPlaneX;
         var startPlaneY;
-
+    
         //第一次触摸到屏幕
         $canvas.on('touchstart',function(e){
             var plane = self.plane;
@@ -144,12 +144,14 @@ var GAME = {
             startPlaneX = plane.x;
             startPlaneY = plane.y;
         });
+        //鼠标控制
+        
 
         //canvas中对滑动屏幕的操作
         $canvas.on('touchmove',function(e) {
             var newTouchX = e.touches[0].clientX;
             var newTouchY = e.touches[0].clientY;
-            // console.log('touchmove',newTouchX,newTouchY);
+            console.log('touchmove',newTouchX,newTouchY);
 
             //新飞机等于手指滑动距离+飞机初始位置
             var newPlaneX = startPlaneX + newTouchX - startTouchX;
@@ -171,6 +173,52 @@ var GAME = {
               self.plane.setPosition(newPlaneX,newPlaneY);
               e.preventDefault();
         })
+        $canvas.on('mousedown',function(e){
+            var plane = self.plane;
+            //记录首次触摸位置，可以深究！！
+            startTouchX = e.offsetX;
+            startTouchY = e.offsetY;
+            //console.log('touchstart', startTouchX, startTouchY);
+            startPlaneX = plane.x;
+            startPlaneY = plane.y;
+            //canvas中对滑动屏幕的操作
+            $canvas.on('mousemove',function(e) {
+            var newTouchX = e.offsetX;
+            var newTouchY = e.offsetY;
+            // console.log('mousemove',newTouchX,newTouchY);
+
+            //新飞机等于手指滑动距离+飞机初始位置
+            var newPlaneX = startPlaneX + newTouchX - startTouchX;
+            var newPlaneY = startPlaneY + newTouchY - startTouchY;
+            //是否越界的判断
+            if(newPlaneX < planeMinX){
+                newPlaneX = planeMinX;
+              }
+              if(newPlaneX > planeMaxX){
+                newPlaneX = planeMaxX;
+              }
+              if(newPlaneY < planeMinY){
+                newPlaneY = planeMinY;
+              }
+              if(newPlaneY > planeMaxY){
+                newPlaneY = planeMaxY;
+              }
+            //   调用飞机类中的设置位置的函数
+              self.plane.setPosition(newPlaneX,newPlaneY);
+              e.preventDefault();
+              if($canvas.on('mouseup')) {
+                  return 0;
+              }
+        })
+            $canvas.on('mouseup',function(){
+                return 1;
+            })
+        })
+        //鼠标控制
+        
+
+        
+
 
     },
    
