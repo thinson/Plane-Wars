@@ -20,7 +20,7 @@ var Plane = function(opts){
 //继承方法
 Plane.prototype = new Element();
 //飞机是否发生碰撞——>游戏结束
-Plane.prototype.hasCeash = function(target) {
+Plane.prototype.hasCrash = function(target) {
     var crash = false;
     if (!(this.x + this.width < target.x) &&
     !(target.x + target.width < this.x) &&
@@ -36,7 +36,7 @@ Plane.prototype.hasHit = function(target) {
     var bullets = this.bullets;
     var hasHit = false;
     for (var j = bullets.length - 1; j >= 0;j--) {
-        if (bullets[j].hasCeash(target)){
+        if (bullets[j].crash(target)){
             //遍历清楚子弹操作
             this.bullets.splice(j,1);
             hasHit = true;

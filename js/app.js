@@ -83,8 +83,9 @@ var GAME = {
         var opts = this.opts;
         var enemySize = opts.enemySize;
         var enemies = this.enemies;
+        var plane = this.plane;
         var i = enemies.length;
-
+       // 遍历下移
         while(i--) {
             var enemy = enemies[i];
             enemy.down();
@@ -92,6 +93,24 @@ var GAME = {
                 this.enemies.splice(i,1);
             }
             else {
+                switch(enemy.status) {
+                    case 'normal':
+                    if(plane.hasHit(enemy)) {
+                        enemy.live -= 1;
+                        if(enemy.live===0) {
+                            enemy.booming();
+                        }
+                    }
+                    break;
+
+                    case 'booming':
+                    enemy.booming();
+                    break;
+
+                    case 'boomed':
+                    enemies.splice(i,1);
+                    break;
+                }
 
             }
         }
@@ -99,6 +118,62 @@ var GAME = {
 
     },
 
+    //触摸控制飞机模块
+    bindTouchAction: function() {
+        var opts = this.opts || {};
+        var self = this;
+        //飞机极限坐标
+        var planeMinX = 0;
+        var planeMinY = 0;
+        var planeMaxX = canvasWidth - opts.planeSize.width;
+        var planeMaxY = canvasHeight - opts.planeSize.height;
+        //手指初始位置
+        var startTouchX;
+        var startTouchY;
+        //飞机初始位置定义
+        var startPlaneX;
+        var startPlaneY;
+
+        //第一次触摸到屏幕
+        $canvas.on('touchstart',function(e){
+            var plane = self.plane;
+            //记录首次触摸位置，可以深究！！
+            startTouchX = e.touches[0].clientX;
+            startTouchY = e.touches[0].clientY;
+            //console.log('touchstart', startTouchX, startTouchY);
+            startPlaneX = plane.x;
+            startPlaneY = plane.y;
+        });
+
+        //canvas中对滑动屏幕的操作
+        $canvas.on('touchmove',function(e) {
+            var newTouchX = e.touches[0].clientX;
+            var newTouchY = e.touches[0].clientY;
+            // console.log('touchmove',newTouchX,newTouchY);
+
+            //新飞机等于手指滑动距离+飞机初始位置
+            var newPlaneX = startPlaneX + newTouchX - startTouchX;
+            var newPlaneY = startPlaneY + newTouchY - startTouchY;
+            //是否越界的判断
+            if(newPlaneX < planeMinX){
+                newPlaneX = planeMinX;
+              }
+              if(newPlaneX > planeMaxX){
+                newPlaneX = planeMaxX;
+              }
+              if(newPlaneY < planeMinY){
+                newPlaneY = planeMinY;
+              }
+              if(newPlaneY > planeMaxY){
+                newPlaneY = planeMaxY;
+              }
+            //   调用飞机类中的设置位置的函数
+              self.plane.setPosition(newPlaneX,newPlaneY);
+              e.preventDefault();
+        })
+
+    },
+   
     createEnemy: function(enemyType) {
         var enemies = this.enemies;
         var opts = this.opts;
@@ -134,7 +209,7 @@ var GAME = {
         if(enemies.length < opts.enemyMaxNum) {
             enemies.push(new Enemy(initOpts));
         }
-        console.log(enemies);
+        //console.log(enemies);
 
     },
     end: function(){
@@ -171,6 +246,7 @@ function blindEvent() {
 function init() {
     resourceHelper.load(CONFIG.resources, function(resources){
     GAME.init();
+    GAME.bindTouchAction();
     blindEvent();
     })
 

@@ -14,7 +14,7 @@ Bullet.prototype.fly = function(){
     return this;
 }
 
-Bullet.prototype.crash = function(){
+Bullet.prototype.crash = function(target){
     var crash = false;
     //判断是否有空隙
     if (!(this.x + this.width < target.x) &&
