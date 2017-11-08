@@ -133,6 +133,7 @@ var GAME = {
         //飞机初始位置定义
         var startPlaneX;
         var startPlaneY;
+        var flag=0;
     
         //第一次触摸到屏幕
         $canvas.on('touchstart',function(e){
@@ -182,8 +183,14 @@ var GAME = {
             startPlaneX = plane.x;
             startPlaneY = plane.y;
             //canvas中对滑动屏幕的操作
-            $canvas.on('mousemove',function(e) {
-            var newTouchX = e.offsetX;
+            flag = 1;
+            $canvas.on('mouseup',function(){
+                flag =  0;
+            })
+        })
+        //鼠标控制
+        $canvas.on('mousemove',function(e) {
+            if (flag === 1) {var newTouchX = e.offsetX;
             var newTouchY = e.offsetY;
             // console.log('mousemove',newTouchX,newTouchY);
 
@@ -206,15 +213,7 @@ var GAME = {
             //   调用飞机类中的设置位置的函数
               self.plane.setPosition(newPlaneX,newPlaneY);
               e.preventDefault();
-              if($canvas.on('mouseup')) {
-                  return 0;
-              }
-        })
-            $canvas.on('mouseup',function(){
-                return 1;
-            })
-        })
-        //鼠标控制
+        }})
         
 
         
