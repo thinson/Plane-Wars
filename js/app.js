@@ -24,6 +24,7 @@ function(callback) {
 var GAME = {
     board : 0,
     score : 0,
+    bossState: 0 ,
     init: function(opts) {
         var opts = Object.assign({}, opts, CONFIG); 
         //把CONFIG的属性传入opts
@@ -35,6 +36,9 @@ var GAME = {
 
        // console.log(this.opts)
     },
+    // createBoss: function(){
+    //     this.createEnemy('boss');
+    // },
     start: function(){
         var self = this;
         var opts = this.opts;
@@ -43,12 +47,27 @@ var GAME = {
         this.enemies = [];
         // this.score = 0;
 
+        
         this.createSmallEnemyInterval = setInterval(function(){
             self.createEnemy('normal');
         },500);
         this.createBigEnemyInterval = setInterval(function(){
             self.createEnemy('big');
         },1500);
+        
+        this.createBigEnemyInterval = setInterval(function(){
+            if(self.score >=200 ) {
+            console.log(self.score)
+            self.createEnemy('boss');
+            }
+            },30000),
+        
+        
+        /*this.createBossEnemy = function() {
+            if(self.score >= 100) {
+                self.createEnemy('boss');
+            }
+        }*/
         this.plane = new Plane({
             x: this.planePosX,
             y: this.planePosY,
@@ -61,7 +80,7 @@ var GAME = {
             icon: resourceHelper.getImage('bluePlaneIcon'),
             bulletIcon: resourceHelper.getImage('fireIcon'),
             boomIcon: resourceHelper.getImage('enemyBigBoomIcon')
-        });
+        }),
         this.plane.startShoot();
 
         this.update();
@@ -102,11 +121,26 @@ var GAME = {
        // 遍历下移
         while(i--) {
             var enemy = enemies[i];
-            enemy.down();
-            if (enemy.y >= canvasHeight) {
+            if(enemy.type === 'boss'&& enemy.live !=0 ) {
+                this.bossState = 1;
+                boss = enemies[i];
+            //     var  j = i-1;
+            //     while(j) {
+            //     var enemy2 = enemies[j];
+            //     enemy2.booming();
+            // }
+        }
+            
+                enemy.down();
+            
+            if (enemy.y >= canvasHeight && this.bossState === 0) {
                 this.enemies.splice(i,1);
             }
+           
             else {
+                if(enemy.y>= 0.25*canvasHeight && this.bossState === 1) {
+                    enemy.miao();
+                }
                 if (plane.status === 'normal') {
                     if (plane.hasCrash(enemy)) {
                         plane.booming();
@@ -123,6 +157,10 @@ var GAME = {
                             else if(enemy.type === 'big') {
                                 this.score +=  110;
                                 }
+                            else {
+                                    this.score +=  300;
+                                    this.bossState = 0;
+                                    }
                     
                             
                             enemy.booming();
@@ -180,7 +218,7 @@ var GAME = {
         $canvas.on('touchmove',function(e) {
             var newTouchX = e.touches[0].clientX;
             var newTouchY = e.touches[0].clientY;
-            console.log('touchmove',newTouchX,newTouchY);
+            // console.log('touchmove',newTouchX,newTouchY);
 
             //新飞机等于手指滑动距离+飞机初始位置
             var newPlaneX = startPlaneX + newTouchX - startTouchX;
@@ -257,6 +295,8 @@ var GAME = {
         var enemySpeed = opts.enemySpeed;
         var enemyIcon = resourceHelper.getImage('enemySmallIcon');
         var enemyBoomIcon = resourceHelper.getImage('enemySmallBoomIcon');
+        // console.log(this.bossState);
+        // var boss = this.bossState;
         // var enemyType = opts.type;
         
         var enemyLive = 1;
@@ -267,6 +307,13 @@ var GAME = {
             enemyIcon = resourceHelper.getImage('enemyBigIcon');
             enemyBoomIcon = resourceHelper.getImage('enemyBigBoomIcon');
             enemyLive = 10;
+        }
+        else if(enemyType === 'boss') {
+            enemySize  = opts.enemyBossSize;
+            enemySpeed = opts.enemySpeed * 0.3;
+            enemyIcon = resourceHelper.getImage('enemyBossIcon');
+            enemyBoomIcon = resourceHelper.getImage('enemyBigBoomIcon');
+            enemyLive = 20;
         }
 
         var initOpts = {
@@ -282,10 +329,10 @@ var GAME = {
             //美工待添加
 
         }
-        if(enemies.length < opts.enemyMaxNum) {
+        if(enemies.length < opts.enemyMaxNum && this.bossState === 0 ) {
             enemies.push(new Enemy(initOpts));
         }
-        //console.log(enemies);
+        // console.log(enemies);
 
     },
 
@@ -298,6 +345,7 @@ var GAME = {
         alert(info);
         this.returnToIndex();
         this.score = 0;
+        this.bossState = 0;
 
     },
     draw: function(){

@@ -28,6 +28,13 @@ Enemy.prototype = new Element();
 Enemy.prototype.down = function() {
   this.move(0, this.speed);
 };
+Enemy.prototype.miao = function() {
+  this.move(-this.speed*20, -this.speed*20);
+  this.move(this.speed*20, -this.speed*20);
+  this.move(this.speed*20, -this.speed*20);
+  this.move(this.speed*20, this.speed*20);
+  this.move(0,-this.speed*2)
+};
 
 /**
  * 方法: booming 爆炸中

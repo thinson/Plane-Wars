@@ -10,7 +10,7 @@ var CONFIG = {
         height: 20
     },
     enemySpeed: 4,
-    enemyMaxNum: 50,
+    enemyMaxNum: 10,
     enemySmallSize: {
         width:54,
         height:40
@@ -18,6 +18,10 @@ var CONFIG = {
     enemyBigSize: {
         width: 130,
         height: 100
+    },
+    enemyBossSize: {
+       width: 360,
+       height: 200
     },
     bulletSpeed: 10,
     // 图片资源配置
@@ -44,7 +48,10 @@ var CONFIG = {
               },
               { src: './img/boom_small.png',
                 name: 'enemySmallBoomIcon'
-              }
+              },
+              { src: './img/enemy_boss.png',
+              name: 'enemyBossIcon'
+            }
             ],
             sounds: [
               { 
