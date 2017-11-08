@@ -18,6 +18,9 @@ var Enemy = function (opts) {
 // 继承Element的方法
 Enemy.prototype = new Element();
 
+// Enemy.prototype.typeChange = function() {
+//   this.type = 'big';
+// }
 
 /**
  * 方法: down 向下移动一个身位 

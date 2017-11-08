@@ -14,6 +14,9 @@ var Plane = function(opts){
     this.bulletSize = opts.bulletSize;
     this.bulletSpeed = opts.bulletSpeed;
     this.bulletIcon = opts.bulletIcon;
+    //爆炸相关
+    this.boomIcon = opts.boomIcon;
+    this.boomCount = 0;
 
 
 };
@@ -76,6 +79,15 @@ Plane.prototype.startShoot = function(){
         }));
         },200)
 };
+Plane.prototype.booming = function() {
+    this.status = 'booming';
+    this.boomCount += 1;
+    if (this.boomCount > 10) {
+        this.status = 'boomed';
+        clearInterval(this.shootingInterval);
+    }
+    return this;
+}
 
 // 绘制子弹
 Plane.prototype.drawBullets = function() {

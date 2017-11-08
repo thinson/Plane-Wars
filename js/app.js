@@ -22,6 +22,8 @@ function(callback) {
 
 // 创建游戏对象
 var GAME = {
+    board : 0,
+    score : 0,
     init: function(opts) {
         var opts = Object.assign({}, opts, CONFIG); 
         //把CONFIG的属性传入opts
@@ -39,7 +41,7 @@ var GAME = {
         var images = this.images;
 
         this.enemies = [];
-        this.score = 0;
+        // this.score = 0;
 
         this.createSmallEnemyInterval = setInterval(function(){
             self.createEnemy('normal');
@@ -71,6 +73,10 @@ var GAME = {
         var opts = this.opts;
         this.updateElement();
         context.clearRect(0,0,canvasWidth,canvasHeight);
+        if(this.plane.status === 'boomed') {
+            this.end();
+            return;
+        }
         this.draw();
 
         requestAnimationFrame(function(){
@@ -80,11 +86,19 @@ var GAME = {
     },
 
     updateElement: function(){
+        var self = this;
         var opts = this.opts;
         var enemySize = opts.enemySize;
         var enemies = this.enemies;
         var plane = this.plane;
         var i = enemies.length;
+        
+        //如果飞机爆炸，继续爆炸
+       if(plane.status === 'booming') {
+           plane.booming();
+           return;
+       }
+
        // 遍历下移
         while(i--) {
             var enemy = enemies[i];
@@ -93,12 +107,26 @@ var GAME = {
                 this.enemies.splice(i,1);
             }
             else {
+                if (plane.status === 'normal') {
+                    if (plane.hasCrash(enemy)) {
+                        plane.booming();
+                    }
+                }
                 switch(enemy.status) {
                     case 'normal':
                     if(plane.hasHit(enemy)) {
                         enemy.live -= 1;
                         if(enemy.live===0) {
+                            if(enemy.type === 'normal') {
+                                this.score +=  10;
+                            }
+                            else if(enemy.type === 'big') {
+                                this.score +=  110;
+                                }
+                    
+                            
                             enemy.booming();
+                            // console.log(this.score);
                         }
                     }
                     break;
@@ -229,6 +257,7 @@ var GAME = {
         var enemySpeed = opts.enemySpeed;
         var enemyIcon = resourceHelper.getImage('enemySmallIcon');
         var enemyBoomIcon = resourceHelper.getImage('enemySmallBoomIcon');
+        // var enemyType = opts.type;
         
         var enemyLive = 1;
 
@@ -243,7 +272,7 @@ var GAME = {
         var initOpts = {
             x: Math.floor(Math.random() * (canvasWidth - enemySize.width)),
             y: -enemySize.height,
-            enemyType: enemyType,
+            type: enemyType,
             live: enemyLive,
             width: enemySize.width,
             height: enemySize.height,
@@ -259,7 +288,16 @@ var GAME = {
         //console.log(enemies);
 
     },
+
+    returnToIndex: function(){
+        $body.attr('data-status','index')
+    },
+
     end: function(){
+        var info = "游戏结束！你的分数为   "+this.score+"!!!  点击回到主页";
+        alert(info);
+        this.returnToIndex();
+        this.score = 0;
 
     },
     draw: function(){
@@ -267,7 +305,15 @@ var GAME = {
             enemy.draw();
         })
         this.plane.draw();
+        this.drawScore();
     },
+    drawScore: function() {
+        // var self = this;
+        this.board ="分数："+ this.score;
+        context.font = "30px Courier New";
+        context.fillStyle = "white";
+        context.fillText(this.board,20,40);
+    }
 
 }
 
