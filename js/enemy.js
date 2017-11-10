@@ -31,21 +31,24 @@ Enemy.prototype.down = function() {
 Enemy.prototype.miao = function() {
   this.move(-this.speed*20, -this.speed*20);
   this.move(this.speed*20, -this.speed*20);
-  this.move(this.speed*20, -this.speed*20);
+  this.move(-this.speed*20, this.speed*20);
   this.move(this.speed*20, this.speed*20);
-  this.move(0,-this.speed*2)
+  this.move(0,-this.speed)
 };
 
 /**
  * 方法: booming 爆炸中
  */
-Enemy.prototype.booming = function() {
+Enemy.prototype.booming = function(soundValue) {
   // 设置状态为 booming
   this.status = 'booming';
   this.boomCount += 1;
   // 如果已经 booming 了 6次，则设置状态为 boomed
   if (this.boomCount > 6) {
     this.status = 'boomed';
+    if(soundValue === 1) {
+      boomSound.play();
+  }
   }
 }
 

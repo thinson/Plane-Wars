@@ -8,6 +8,7 @@ var Plane = function(opts){
     //特有
     this.status = 'normal';
     this.icon = opts.icon;
+    this.color;
 
     //bullet相关
     this.bullets = [];
@@ -58,7 +59,7 @@ Plane.prototype.setPosition = function(newPlaneX, newPlaneY) {
 
 //开始射击
 
-Plane.prototype.startShoot = function(){
+Plane.prototype.startShoot = function(soundValue){
     var self = this;
     var bulletWidth = this.bulletSize.width;
     var bulletHeight = this.bulletSize.height;
@@ -68,6 +69,7 @@ Plane.prototype.startShoot = function(){
         //定义子弹初始位置
         var bulletX = self.x + self.width / 2 -bulletWidth / 2;
         var bulletY = self.y - bulletHeight;
+        
         //初始化完成后执行push函数定时创建子弹
         self.bullets.push (new Bullet({
             x: bulletX,
@@ -77,13 +79,22 @@ Plane.prototype.startShoot = function(){
             speed: self.bulletSpeed,
             icon: self.bulletIcon,
         }));
-        },200)
+        if(soundValue === 1) {
+            shootSound.play();
+            console.log("1111",this.gameValue)
+        }
+        },150)
+    
 };
-Plane.prototype.booming = function() {
+Plane.prototype.booming = function(soundValue) {
     this.status = 'booming';
     this.boomCount += 1;
+    if(soundValue === 1) {
+        boomSound.play();
+    }
     if (this.boomCount > 10) {
         this.status = 'boomed';
+        
         clearInterval(this.shootingInterval);
     }
     return this;

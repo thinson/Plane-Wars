@@ -10,7 +10,7 @@ var CONFIG = {
         height: 20
     },
     enemySpeed: 4,
-    enemyMaxNum: 10,
+    enemyMaxNum: 7,
     enemySmallSize: {
         width:54,
         height:40
@@ -51,7 +51,7 @@ var CONFIG = {
               },
               { src: './img/enemy_boss.png',
               name: 'enemyBossIcon'
-            }
+             },
             ],
             sounds: [
               { 

@@ -18,7 +18,7 @@
 	</div>
 	<div class="ui-rule ui-panel">
 		<h1>游戏说明</h1>
-		<p>击中大飞机加110分，小飞机加10分，现在设置尚未彻底完成</p>
+		<p>击中boss加500分，大飞机加110分，小飞机加10分，目前游戏基本完成</br>PS:boss不是开发者，是开发者室友</p>
 		<button class="js-confirm btn">OK</button>
 	</div>
 	<div class="ui-setting ui-panel">
@@ -26,21 +26,21 @@
 		<ul class="setting-group">
 			<li class="setting">
 				<span>音乐设置</span>
-				<select>
-					<option value="0">开启音乐</option>
-					<option value="1">关闭音乐</option>
+				<select class="musicSetting">
+					<option value="0">关闭音乐</option>
+					<option value="1">开启音乐</option>
 				</select>
 			</li>
 			<li class="setting">
 			    <span>背景设置</span>
-				<select>
+				<select class="bgSetting">
 					<option value="0">海洋世界</option>
 					<option value="1">火山苍穹</option>
 				</select>
 			</li>
 			<li class="setting">
 			    <span>战机设置</span>
-				<select>
+				<select class="planeSetting">
 					<option value="0">蓝色战机</option>
 					<option value="1">粉红战机</option>
 				</select>
@@ -50,6 +50,7 @@
 	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 	<script src="js/config.js"></script>
+	<script src="js/sound.js"></script>
 	<script src="js/resource.js"></script>
 	<script src="js/element.js"></script>
 	<script src="js/bullet.js"></script>

@@ -19,16 +19,62 @@ window.msRequestAnimationFrame ||
 function(callback) {
     window.setTimeout(callback, 1000 / 30);
 };
-
 // 创建游戏对象
 var GAME = {
-    board : 0,
-    score : 0,
-    bossState: 0 ,
+    // board : 0,
+    // score : 0,
+    // bossState: 0 ,
+    // soundValue : 1 ,
+    //检测声音是否开启
+    soundValueChange: function(){
+        var obj =  $('.musicSetting').val()
+        
+        if(obj ==="1") {
+            this.soundValue = 1;
+            // console.log("jiancehaole");
+        }
+        else {
+            this.soundValue = 0;
+        }
+        // console.log(obj);
+        // console.log(this.soundValue);
+    },
+    bgImageChange: function() {
+        var obj =  $('.bgSetting').val()
+        
+        if(obj ==="1") {
+            document.body.style.backgroundImage="url(./img/bg_4.jpg)";
+    }
+    },
+    planeImageChange: function() {
+        var obj =  $('.planeSetting').val()
+        
+        if(obj ==="1") {
+            this.planeColor = 'pink';
+            console.log(this.planeColor)
+    }
+    },
     init: function(opts) {
         var opts = Object.assign({}, opts, CONFIG); 
         //把CONFIG的属性传入opts
         this.opts = opts; 
+        this.soundValue = 0;
+        this.score = 0;
+        this.board = 0;
+        this.bossState = 0;
+        this.planeColor = 'blue';
+        this.soundValueChange();
+        this.bgImageChange();
+        this.planeImageChange();
+        if(this.soundValue === 1 ) {
+            
+                gameSound.play();
+                gameSound.loop = 1;
+            
+        }
+        else {
+            gameSound.pause();
+        }
         //弄懂一下this，此处可能是将opts这个位置属性付给game这个大框架,作为GAME的一个属性
 
         this.planePosX = canvasWidth / 2 -opts.planeSize.width / 2;
@@ -47,17 +93,16 @@ var GAME = {
         this.enemies = [];
         // this.score = 0;
 
-        
         this.createSmallEnemyInterval = setInterval(function(){
             self.createEnemy('normal');
         },500);
         this.createBigEnemyInterval = setInterval(function(){
             self.createEnemy('big');
-        },1500);
+        },3000);
         
         this.createBigEnemyInterval = setInterval(function(){
             if(self.score >=200 ) {
-            console.log(self.score)
+            // console.log(self.score)
             self.createEnemy('boss');
             }
             },30000),
@@ -73,6 +118,7 @@ var GAME = {
             y: this.planePosY,
             width: opts.planeSize.width,
             height: opts.planeSize.height,
+            color: opts.planeColor,
             //子弹相关
             bulletSize: opts.bulletSize,
             bulletSpeed: opts.bulletSpeed,
@@ -81,9 +127,12 @@ var GAME = {
             bulletIcon: resourceHelper.getImage('fireIcon'),
             boomIcon: resourceHelper.getImage('enemyBigBoomIcon')
         }),
-        this.plane.startShoot();
-
+        this.plane.startShoot(this.soundValue);
+        if(this.planeColor === 'pink') {
+            this.plane.icon = resourceHelper.getImage('pinkPlaneIcon');
+        }
         this.update();
+
 
 
     },
@@ -114,7 +163,7 @@ var GAME = {
         
         //如果飞机爆炸，继续爆炸
        if(plane.status === 'booming') {
-           plane.booming();
+           plane.booming(this.soundValue);
            return;
        }
 
@@ -138,12 +187,12 @@ var GAME = {
             }
            
             else {
-                if(enemy.y>= 0.25*canvasHeight && this.bossState === 1) {
+                if(enemy.y>= canvasHeight && this.bossState === 1) {
                     enemy.miao();
                 }
                 if (plane.status === 'normal') {
                     if (plane.hasCrash(enemy)) {
-                        plane.booming();
+                        plane.booming(this.soundValue);
                     }
                 }
                 switch(enemy.status) {
@@ -163,14 +212,14 @@ var GAME = {
                                     }
                     
                             
-                            enemy.booming();
+                            enemy.booming(this.soundValue);
                             // console.log(this.score);
                         }
                     }
                     break;
 
                     case 'booming':
-                    enemy.booming();
+                    enemy.booming(this.soundValue);
                     break;
 
                     case 'boomed':
@@ -313,7 +362,7 @@ var GAME = {
             enemySpeed = opts.enemySpeed * 0.3;
             enemyIcon = resourceHelper.getImage('enemyBossIcon');
             enemyBoomIcon = resourceHelper.getImage('enemyBigBoomIcon');
-            enemyLive = 20;
+            enemyLive = 30;
         }
 
         var initOpts = {
@@ -341,6 +390,9 @@ var GAME = {
     },
 
     end: function(){
+        if(this.soundValue === 1) {
+            endSound.play();
+        }
         var info = "游戏结束！你的分数为   "+this.score+"!!!  点击回到主页";
         alert(info);
         this.returnToIndex();
@@ -372,13 +424,14 @@ function blindEvent() {
         GAME.start();
     })
     $('.js-setting').on('click',function(){
-        $body.attr('data-status','setting')
+        $body.attr('data-status','setting');
     })
     $('.js-rule').on('click',function(){
         $body.attr('data-status','rule')
     })
     $('.js-confirm').on('click',function(){
         $body.attr('data-status','index')
+        GAME.init();
     })
 }
 

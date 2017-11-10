@@ -13,6 +13,9 @@ var resourceHelper = {
     getImage: function(imageName) {
         return this.resources.images[imageName];
     },
+    // getSound: function(soundName) {
+    //     return this.resources.sounds[soundName];
+    // },
 
     load: function(resources,callback) {
         var images = resources.images;
@@ -35,5 +38,6 @@ var resourceHelper = {
                 }
             });
         }
-    }
+    },
+
 }
