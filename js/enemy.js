@@ -28,12 +28,16 @@ Enemy.prototype = new Element();
 Enemy.prototype.down = function() {
   this.move(0, this.speed);
 };
+/*
+* boss出现满屏飞机癫狂
+*/
 Enemy.prototype.miao = function() {
-  this.move(-this.speed*20, -this.speed*20);
-  this.move(this.speed*20, -this.speed*20);
-  this.move(-this.speed*20, this.speed*20);
-  this.move(this.speed*20, this.speed*20);
-  this.move(0,-this.speed)
+   this.move((-15+(Math.floor(Math.random() * (30))))*this.speed,0);
+  // this.move(-this.speed*20, 0);
+  // this.move(0,this.speed)
+  // this.move(this.speed*20, 0);
+  // this.move(-this.speed*20, this.speed*20);
+  // this.move(this.speed*20, this.speed*20);
 };
 
 /**

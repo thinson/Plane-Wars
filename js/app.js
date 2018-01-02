@@ -51,7 +51,7 @@ var GAME = {
         
         if(obj ==="1") {
             this.planeColor = 'pink';
-            console.log(this.planeColor)
+            // console.log(this.planeColor)
     }
     },
     init: function(opts) {
@@ -187,7 +187,7 @@ var GAME = {
             }
            
             else {
-                if(enemy.y>= canvasHeight && this.bossState === 1) {
+                if(enemy.y>= 0 && enemy.x>=0 &&enemy.x <= canvasWidth - enemy.width && this.bossState === 1) {
                     enemy.miao();
                 }
                 if (plane.status === 'normal') {
